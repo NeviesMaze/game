@@ -1,6 +1,8 @@
 package Gameexample;
 
+
 import java.util.Scanner;
+
 
 public class MyGameDriver {
 	public static final Scanner sc = new Scanner(System.in);
@@ -8,14 +10,27 @@ public class MyGameDriver {
 	public static void main(String[] args) {
 		MyGame game = new MyGame();
 		game.setBoard();
-		game.setCurrentPos(2, 3);
+		game.setCurrentPos(4, 4);
 		game.setEnemyPos(1, 2);
+		game.setEnemyPos1(3, 0);
+		game.setEnemyPos2(4, 1);
 		game.setArmorPos(4, 0);
 		
 
 		do {
+			
+			System.out.println("************************************\n");
+			System.out.println(" LEGEND:\n"
+					+ " * - Player position \n $ - Troll (60HP / 30DMG) \n + - Armor (+50HP) \n" );
+			System.out.println("\n");
+			System.out.println("Tip: You receive less damage if you attack enemies from up or downside  \n");
+			System.out.println("************************************\n");
+			System.out.println(" GAMING BOARD: \n");
 			game.displayBoard();
+			System.out.println("\n");
 			System.out.println("Health: " + game.getHealth());
+			System.out.println("\n");
+			System.out.println("************************************\n");
 			game.displayMenu();
 			game.setUserChoice(sc.nextInt());
 			game.processChoice(game.getUserChoice());
