@@ -1,8 +1,5 @@
-package game;
+package Gameexample;
 
-
- ////////
- 
 public class MyGame {
 	// number of columns in the game
 	public final int NUM_COLS = 5;
@@ -15,7 +12,7 @@ public class MyGame {
 	private int userChoice;
 	private int rpos;
 	private int cpos;
-	private int score = 0;
+	private int health = 100;
 	private int newrpos;
 	private int newcpos;
 
@@ -23,8 +20,10 @@ public class MyGame {
 	public final char EMPTY_CELL = '-';
 	// character for player's current position
 	public final char PLAYER_POS = '*';
-	// character for gold
-	public final char GOLD = '$';
+	// character for enemy
+	public final char ENEMY = '$';
+	// character for armor
+	public final char ARMOR = '!';
 
 	// set and get methods
 	public void setRpos(int rpos) {
@@ -35,8 +34,8 @@ public class MyGame {
 		this.cpos = cpos;
 	}
 
-	public int getScore() {
-		return score;
+	public int getHealth() {
+		return health;
 	}
 
 	public int getUserChoice() {
@@ -65,11 +64,19 @@ public class MyGame {
 
 	}
 
-	// Place gold on the board into a selected cell
-	public void setGoldPos(int rpos, int cpos) {
-		board[rpos][cpos] = GOLD;
+	// Place enemy on the board into a selected cell
+	public void setEnemyPos(int rpos, int cpos) {
+		board[rpos][cpos] = ENEMY;
 
 	}
+	
+	
+	public void setArmorPos(int rpos, int cpos) {
+		board[rpos][cpos] = ARMOR;
+
+	}
+	
+	
 
 	// method to display current status of board
 	public void displayBoard() {
@@ -82,7 +89,7 @@ public class MyGame {
 
 	}
 
-	// Set new position for the column, collect gold (if it is in the path)
+	// Set new position for the column, collect health (if it is in the path)
 	public void setNewCPos(String dir) {
 		if (dir.equals("left")) {
 			newcpos = getNextLeftPos(cpos);
@@ -90,8 +97,11 @@ public class MyGame {
 			newcpos = getNextRightPos(cpos);
 		}
 		if (newcpos != -1) {
-			if (foundGold(rpos, newcpos) == true) {
-				score = score + 100;
+			if (foundEnemy(rpos, newcpos) == true) {
+				health = health - 30;
+			}
+			if (foundArmor(rpos, newcpos) == true ) {
+				health = health + 50;
 			}
 			makeMove(rpos, rpos, cpos, newcpos);
 			cpos = newcpos;
@@ -100,7 +110,7 @@ public class MyGame {
 		}
 	}
 
-	// Set new position for the row, collect gold (if it is in the path)
+	// Set new position for the row, collect health (if it is in the path)
 	public void setNewRPos(String dir) {
 		if (dir.equals("up")) {
 			newrpos = getNextUpPos(rpos);
@@ -108,8 +118,11 @@ public class MyGame {
 			newrpos = getNextDownPos(rpos);
 		}
 		if (newrpos != -1) {
-			if (foundGold(newrpos, cpos) == true) {
-				score = score + 100;
+			if (foundEnemy(newrpos, cpos) == true) {
+				health = health - 30;
+			}
+			if (foundArmor(newrpos, cpos) == true ) {
+				health = health + 50;
 			}
 			makeMove(rpos, newrpos, cpos, cpos);
 			rpos = newrpos;
@@ -162,16 +175,28 @@ public class MyGame {
 		return newr;
 	}
 
-	// Method to determine if gold was found
-	public boolean foundGold(int r, int c) {
+	// Method to determine if Enemy was found
+	public boolean foundEnemy(int r, int c) {
 		boolean result;
-		if (board[r][c] == GOLD) {
+		if (board[r][c] == ENEMY) {
 			result = true;
 		} else {
 			result = false;
 		}
 		return result;
 	}
+	
+	
+	// Method to determine if Armor was found
+		public boolean foundArmor(int r, int c) {
+			boolean result;
+			if (board[r][c] == ARMOR) {
+				result = true;
+			} else {
+				result = false;
+			}
+			return result;
+		}
 
 	// Moving player on the board to the new position
 	public void makeMove(int oldr, int newr, int oldc, int newc) {
