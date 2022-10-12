@@ -17,13 +17,13 @@ public class MyGame {
 	private int newcpos;
 
 	// character for empty cell
-	public final char EMPTY_CELL = '-';
+	public final char EMPTY_CELL = '~';
 	// character for player's current position
 	public final char PLAYER_POS = '*';
 	// character for enemy
 	public final char ENEMY = '$';
 	// character for armor
-	public final char ARMOR = '!';
+	public final char ARMOR = '+';
 
 	// set and get methods
 	public void setRpos(int rpos) {
@@ -76,6 +76,16 @@ public class MyGame {
 
 	}
 	
+	public void setEnemyPos1(int rpos, int cpos) {
+		board[rpos][cpos] = ENEMY;
+
+	}
+	
+	public void setEnemyPos2(int rpos, int cpos) {
+		board[rpos][cpos] = ENEMY;
+
+	}
+	
 	
 
 	// method to display current status of board
@@ -89,7 +99,7 @@ public class MyGame {
 
 	}
 
-	// Set new position for the column, collect health (if it is in the path)
+	// Set new position for the column, collect armor (if it is in the path)
 	public void setNewCPos(String dir) {
 		if (dir.equals("left")) {
 			newcpos = getNextLeftPos(cpos);
@@ -119,7 +129,7 @@ public class MyGame {
 		}
 		if (newrpos != -1) {
 			if (foundEnemy(newrpos, cpos) == true) {
-				health = health - 30;
+				health = health - 15;
 			}
 			if (foundArmor(newrpos, cpos) == true ) {
 				health = health + 50;
@@ -210,7 +220,7 @@ public class MyGame {
         System.out.println("2. Move right");
         System.out.println("3. Move up");
         System.out.println("4. Move down");
-        System.out.println("5. Quit");
+        System.out.println("5. Quit \n");
         System.out.println("Please enter your choice: ");
     }
 	
