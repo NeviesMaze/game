@@ -1,1 +1,212 @@
-hh
+package game;
+
+public class MyGame {
+	// number of columns in the game
+	public final int NUM_COLS = 5;
+	// number of rows in the game
+	public final int NUM_ROWS = 5;
+
+	// the actual game board (a two dimension array)
+	public final char[][] board = new char[NUM_ROWS][NUM_COLS];
+	// attribute variables used
+	private int userChoice;
+	private int rpos;
+	private int cpos;
+	private int score = 0;
+	private int newrpos;
+	private int newcpos;
+
+	// character for empty cell
+	public final char EMPTY_CELL = '-';
+	// character for player's current position
+	public final char PLAYER_POS = '*';
+	// character for gold
+	public final char GOLD = '$';
+
+	// set and get methods
+	public void setRpos(int rpos) {
+		this.rpos = rpos;
+	}
+
+	public void setCpos(int cpos) {
+		this.cpos = cpos;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public int getUserChoice() {
+		return userChoice;
+	}
+
+	public void setUserChoice(int userChoice) {
+		this.userChoice = userChoice;
+	}
+
+	public void setBoard() {
+		// Set the board with empty cells
+		for (int r = 0; r < NUM_ROWS; r++) {
+			for (int c = 0; c < NUM_COLS; c++) {
+				board[r][c] = EMPTY_CELL;
+			}
+		}
+
+	}
+
+	// Setting the coordinates of the new player's position
+	public void setCurrentPos(int rpos, int cpos) {
+		setRpos(rpos);
+		setCpos(cpos);
+		board[rpos][cpos] = PLAYER_POS;
+
+	}
+
+	// Place gold on the board into a selected cell
+	public void setGoldPos(int rpos, int cpos) {
+		board[rpos][cpos] = GOLD;
+
+	}
+
+	// method to display current status of board
+	public void displayBoard() {
+		for (int r = 0; r < NUM_ROWS; r++) {
+			for (int c = 0; c < NUM_COLS; c++) {
+				System.out.print(board[r][c]);
+			}
+			System.out.println();
+		}
+
+	}
+
+	// Set new position for the column, collect gold (if it is in the path)
+	public void setNewCPos(String dir) {
+		if (dir.equals("left")) {
+			newcpos = getNextLeftPos(cpos);
+		} else {
+			newcpos = getNextRightPos(cpos);
+		}
+		if (newcpos != -1) {
+			if (foundGold(rpos, newcpos) == true) {
+				score = score + 100;
+			}
+			makeMove(rpos, rpos, cpos, newcpos);
+			cpos = newcpos;
+		} else {
+			System.out.println("Invalid move");
+		}
+	}
+
+	// Set new position for the row, collect gold (if it is in the path)
+	public void setNewRPos(String dir) {
+		if (dir.equals("up")) {
+			newrpos = getNextUpPos(rpos);
+		} else {
+			newrpos = getNextDownPos(rpos);
+		}
+		if (newrpos != -1) {
+			if (foundGold(newrpos, cpos) == true) {
+				score = score + 100;
+			}
+			makeMove(rpos, newrpos, cpos, cpos);
+			rpos = newrpos;
+		} else {
+			System.out.println("Invalid move");
+		}
+	}
+
+	// Method to find 1 position to the left
+	public int getNextLeftPos(int c) {
+		int newc;
+		if (c == 0) {
+			newc = -1;
+		} else {
+			newc = c - 1;
+		}
+		return newc;
+	}
+
+	// Method to find 1 position to the right
+	public int getNextRightPos(int c) {
+		int newc;
+		if (c == NUM_COLS - 1) {
+			newc = -1;
+		} else {
+			newc = c + 1;
+		}
+		return newc;
+	}
+
+	// Method to find 1 position up
+	public int getNextUpPos(int r) {
+		int newr;
+		if (r == 0) {
+			newr = -1;
+		} else {
+			newr = r - 1;
+		}
+		return newr;
+	}
+
+	// Method to find 1 position down
+	public int getNextDownPos(int r) {
+		int newr;
+		if (r == NUM_ROWS - 1) {
+			newr = -1;
+		} else {
+			newr = r + 1;
+		}
+		return newr;
+	}
+
+	// Method to determine if gold was found
+	public boolean foundGold(int r, int c) {
+		boolean result;
+		if (board[r][c] == GOLD) {
+			result = true;
+		} else {
+			result = false;
+		}
+		return result;
+	}
+
+	// Moving player on the board to the new position
+	public void makeMove(int oldr, int newr, int oldc, int newc) {
+		board[oldr][oldc] = EMPTY_CELL;
+		board[newr][newc] = PLAYER_POS;
+	}
+	//menu to be displayed
+	public void displayMenu() {
+        System.out.println("Menu");
+        System.out.println("1. Move left");
+        System.out.println("2. Move right");
+        System.out.println("3. Move up");
+        System.out.println("4. Move down");
+        System.out.println("5. Quit");
+        System.out.println("Please enter your choice: ");
+    }
+	
+	//processing the choice
+	public void processChoice(int choice) {
+        switch (choice) {
+            case 1:
+                setNewCPos("left");
+                break;
+            case 2:
+                setNewCPos("right");
+                break;
+            case 3:
+                setNewRPos("up");
+                break;
+            case 4:
+                setNewRPos("down");
+                break;
+            case 5:
+                System.out.println("Bye");
+                break;
+            default:
+                System.out.println("Invalid choice. Please try again");
+        }
+    }
+
+}
