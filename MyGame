@@ -1,5 +1,8 @@
 package game;
 
+
+ ////////
+ 
 public class MyGame {
 	// number of columns in the game
 	public final int NUM_COLS = 5;
