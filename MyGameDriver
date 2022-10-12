@@ -9,11 +9,13 @@ public class MyGameDriver {
 		MyGame game = new MyGame();
 		game.setBoard();
 		game.setCurrentPos(2, 3);
-		game.setGoldPos(1, 2);
+		game.setEnemyPos(1, 2);
+		game.setArmorPos(4, 0);
+		
 
 		do {
 			game.displayBoard();
-			System.out.println("Score: " + game.getScore());
+			System.out.println("Health: " + game.getHealth());
 			game.displayMenu();
 			game.setUserChoice(sc.nextInt());
 			game.processChoice(game.getUserChoice());
