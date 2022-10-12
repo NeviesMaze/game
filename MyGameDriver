@@ -1,0 +1,24 @@
+package Gameexample;
+
+import java.util.Scanner;
+
+public class MyGameDriver {
+	public static final Scanner sc = new Scanner(System.in);
+
+	public static void main(String[] args) {
+		MyGame game = new MyGame();
+		game.setBoard();
+		game.setCurrentPos(2, 3);
+		game.setGoldPos(1, 2);
+
+		do {
+			game.displayBoard();
+			System.out.println("Score: " + game.getScore());
+			game.displayMenu();
+			game.setUserChoice(sc.nextInt());
+			game.processChoice(game.getUserChoice());
+		} while (game.getUserChoice() != 6);
+
+	}
+
+}
